@@ -7,13 +7,14 @@ import { AuthProvider } from './context/AuthContext';
 import { BrowserRouter, Route } from 'react-router-dom';
 
 import TodoList from './components/TodoList'
+import PrivateRoute from './components/PrivateRoute';
 
 function App() {
   return (
     <AuthProvider>
       <div style={{ margin: "2em" }}>
         <BrowserRouter>
-          <Route exact path="/" component={Home} />
+          <PrivateRoute exact path="/" component={Home} />
           <Route path="/signup" component={SignUp} />
           <Route path="/Login" component={Login} />
         </BrowserRouter>

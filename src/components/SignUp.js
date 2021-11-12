@@ -15,7 +15,7 @@ const SignUp = () => {
     return (
         <div>
             <h1>ユーザー登録</h1>
-            <p>{user.email}</p>
+            {/* <p>{user.email}</p> */}
             <form onSubmit={handleSubmit}>
                 <div>
                     <label>メールアドレス</label>
