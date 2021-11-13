@@ -23,7 +23,7 @@ export function AuthProvider({ children }) {
         //サインインの場合はuserオブジェクトにusereに関する値を持つ、
         //サインアウトの場合はnullとなる。
         const unsubscribed = auth.onAuthStateChanged((user) => {
-            console.log(user);
+            // console.log(user);
             setUser(user);
             setLoading(false);
         })
@@ -32,5 +32,7 @@ export function AuthProvider({ children }) {
             unsubscribed();
         };
     }, []);//更新はしない
-    return <AuthContext.Provider value={value}>{!loading && children}</AuthContext.Provider>
+    return <AuthContext.Provider value={value}>
+            {!loading && children}
+            </AuthContext.Provider>
 }

@@ -1,21 +1,28 @@
-import { useRef } from 'react';
+import { useRef, useState} from 'react';
 import { auth } from '../firebase';
 import { useAuthContext } from '../context/AuthContext';
+import { Link, useHistory} from 'react-router-dom';
 
 const SignUp = () => {
+    const history = useHistory();
+    const [error, setError] = useState('');
     const { user } = useAuthContext();
     const emailRef = useRef(null);
     const emailPassword = useRef(null);
-    const handleSubmit = (event) => {
+    const handleSubmit = async (event) => {
         event.preventDefault();
-        auth.createUserWithEmailAndPassword(emailRef.current.value, emailPassword.current.value);
+        try {
+            await auth.createUserWithEmailAndPassword(emailRef.current.value, emailPassword.current.value);
+        } catch(error) {
+            setError(error.message);
+        }
         //console.log(emailRef.current.value, emailPassword.current.value);
 };
 
     return (
         <div>
             <h1>ユーザー登録</h1>
-            {/* <p>{user.email}</p> */}
+            {error && <p style={{color: 'red'}}>{error}</p>}
             <form onSubmit={handleSubmit}>
                 <div>
                     <label>メールアドレス</label>

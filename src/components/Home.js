@@ -14,7 +14,6 @@ const Home = () => {
     if(!user) {
         return <Redirect to="/login" />
     } else {
-
         return (
             <div>
                 <h1>ホームページ</h1>
