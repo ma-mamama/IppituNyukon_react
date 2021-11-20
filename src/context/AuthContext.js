@@ -3,30 +3,38 @@ import { auth } from '../firebase';
 
 const AuthContext = createContext();
 
-export function useAuthContext() {
+export const useAuthContext =　() => {
     //Contextは共有できる
     return useContext(AuthContext);
 }
 
-export function AuthProvider({ children }) {
+export const AuthProvider =( { children }) => {
     const [user, setUser] = useState('');
     const [loading, setLoading] = useState(true);
+    const [userName, setUserName] = useState('');
+
+    const currentUser =  auth.currentUser;
 
     const value = {
         user,
         loading,
+        userName,
+        setUserName,
+        currentUser
     };
- 
+    console.log("auth1:"+userName);
     useEffect(() => {
         //マウント時に実行
         //onAuthStateChangedはサインイン、サインアウトが行われると実行、
         //サインインの場合はuserオブジェクトにusereに関する値を持つ、
         //サインアウトの場合はnullとなる。
         const unsubscribed = auth.onAuthStateChanged((user) => {
-            // console.log(user);
+            console.log("auth2:"+userName);
+            // console.log(user.displayName);
             setUser(user);
             setLoading(false);
         })
+        // const unsubscribed = auth.onAuthStateChanged(user)
         //クリーンアップ
         return () => {
             unsubscribed();
