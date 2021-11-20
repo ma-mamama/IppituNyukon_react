@@ -1,5 +1,6 @@
 import React, { useCallback, useEffect, useState, useRef} from 'react';
 import {Stage ,Graphics } from '@inlet/react-pixi';
+import * as PIXI from 'pixi.js'
 
 const PixiTest = (props) => {
   const [posX, setPosX] = useState(0);
@@ -37,7 +38,10 @@ const PixiTest = (props) => {
   const draw = useCallback((g) => {
     if(!isWrite) return;
     g.beginFill(props.color);
-    g.lineStyle(4, 0x000, 1);
+    // g.lineStyle({width:4, color:0x000,alpha:1, alignment:0.5, native:false, cap:"PIXI.LINE_CAP.ROUND"});
+    g.lineStyle(4, 0x000,1, 0.5, false, "ROUND");
+
+    // g.lineStyle({"options.cap":"round"});
     g.moveTo(posX, posY);
     g.lineTo(moveX, moveY);
     setPosX(moveX);
@@ -60,14 +64,15 @@ const PixiTest = (props) => {
           height={300} 
           options={{
              backgroundColor: 0xfffffffff ,
-             preserveDrawingBuffer: true
+             preserveDrawingBuffer: true,
+             antialias: true
             }} 
           onMouseDown={mouseDown}
           onMouseUp={mouseUp}
           onMouseMove={mouseMove} 
           renderOnComponentChange={true} //画像URLに変換するための設定
           >
-          <Graphics draw={draw} ref={grapficsRef}/> 
+          <Graphics draw={draw} ref={grapficsRef} /> 
         </Stage>
         <br /><input type="button" value="登録" onClick={register}/>
         <br />{titleName}
