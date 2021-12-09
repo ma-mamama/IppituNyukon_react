@@ -18,13 +18,15 @@ function App() {
     <AuthProvider>
       <div style={{ margin: "2em" }}>
         <BrowserRouter>
-          <PrivateRoute exact path="/" component={Top} />
-          <PublicRoute path="/signup" component={SignUp} />
+          <Route exact path="/" component={Top} />
+          {/* <PublicRoute path="/signup" component={SignUp} /> */}
+          <Route path="/signup" component={SignUp} />
           <PublicRoute path="/Login" component={Login} />
+          {/* <Route path="/Login" component={Login} />  */}
           <Route path="/listpaint" component={ListPaint}/>
           <Route path="/mypage" component={MyPage}/> 
           <Route path="/paint" component={Paint} />
-          <PrivateRoute exact path="/home" component={Home} />
+          <Route exact path="/home" component={Home} />
         </BrowserRouter>
       </div>
     </AuthProvider>

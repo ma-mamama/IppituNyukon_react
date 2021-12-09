@@ -1,6 +1,8 @@
 import React, { useCallback, useEffect, useState, useRef} from 'react';
 import {Stage ,Graphics } from '@inlet/react-pixi';
 import * as PIXI from 'pixi.js'
+import { addPaint } from '../models/models';
+import { useAuthContext } from '../context/AuthContext';
 
 const PixiTest = (props) => {
   const [posX, setPosX] = useState(0);
@@ -11,6 +13,8 @@ const PixiTest = (props) => {
   const [titleName, setTitleName] = useState("");
   const [url, setUrl] = useState("")
 
+  const { user } = useAuthContext();
+
   const stageRef = useRef(null);
   const grapficsRef = useRef(null);
   const titleRef = useRef(null);
@@ -19,8 +23,6 @@ const PixiTest = (props) => {
     setIsWrite(true);
     setPosX(e.nativeEvent.offsetX)
     setPosY(e.nativeEvent.offsetY)
-    console.log("on:\n")
-    console.log(e.nativeEvent)
   }
 
   const mouseUp = (e) => {
@@ -30,8 +32,6 @@ const PixiTest = (props) => {
   const mouseMove = (e) => {
     setMoveX(e.nativeEvent.offsetX)
     setMoveY(e.nativeEvent.offsetY)
-    console.log("move:\n")
-    console.log(e.nativeEvent)
     
   }
 
@@ -53,6 +53,9 @@ const PixiTest = (props) => {
     // console.log(grapficsRef)
     setTitleName(titleRef.current.value)
     setUrl(stageRef.current._canvas.toDataURL())
+    addPaint(user.uid,titleRef.current.value, stageRef.current._canvas.toDataURL()).then(
+      alert("アップロード完了")
+    )
   }
 
   return (

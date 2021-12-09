@@ -3,6 +3,12 @@ import {Link, useHistory} from 'react-router-dom';
 import { useState } from 'react';
 
 import Status from '../components/Status';
+import ToHome from '../components/ToHome';
+import { googleLogin } from '../Provider/AuthProvider';
+
+const usercreateStyle = {
+    // display: "block",
+}
 
 const Login = () => {
     const history = useHistory();
@@ -20,7 +26,7 @@ const Login = () => {
     };
     const googleSubmit = async (event) => {
         try {
-            await auth.signInWithPopup(provider);
+            await googleLogin();
             history.push('/')
         } catch(error) {
             console.log(error);
@@ -29,7 +35,7 @@ const Login = () => {
     };
     return (
         <div>
-            <Status />
+            <ToHome />
             <h1>ログイン</h1>
             {error && <p style={{color: 'red'}}>{error}</p>}
             <form onSubmit={handleSubmit}>
@@ -44,10 +50,9 @@ const Login = () => {
                 <div>
                     <button>ログイン</button>
                 </div>
-                <div>
-                    ユーザ登録は<Link to={'/signup'}>こちら</Link>から
-                </div>
+
                 <button onClick={googleSubmit}>Googleログイン</button>
+                <div style={usercreateStyle}><Link to="/SignUp">新規登録はこちら</Link></div>
             </form>
         </div>
     );

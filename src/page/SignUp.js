@@ -5,12 +5,13 @@ import { useHistory, Redirect } from 'react-router-dom';
 
 import { AddUser } from '../models/models';
 import { useAuthContext } from '../context/AuthContext';
+import { signup } from '../Provider/AuthProvider';
+import ToHome from '../components/ToHome';
 
 
 const SignUp = () => {
     const history = useHistory();
     const [error, setError] = useState('');
-    const { userName,setUserName } = useAuthContext();
     // const { user } = useAuthContext();
 
     const userNameRef = useRef(null);
@@ -19,19 +20,21 @@ const SignUp = () => {
     
     const handleSubmit = async(event) => {
         event.preventDefault();
-        try {
-             setUserName(userNameRef.current.value);
-             console.log(userNameRef.current.value);
-             await auth.createUserWithEmailAndPassword(emailRef.current.value, emailPassword.current.value)
-             db.collection("users").doc(auth().currentUser.uid).set({
-                uid: auth().currentUser.uid,
-                userName: userNameRef.current.value /*app.auth().currentUser.displayName*/,
-                userIconUrl: "iconurl" /*app.auth().currentUser.userIconUrl*/,
-              });
-              history.push("Home")
-        } catch(error) {
-            setError(error.message);
-        }
+        console.log(userNameRef.current.value);
+        
+        signup(userNameRef.current.value, emailRef.current.value, emailPassword.current.value)
+        // SignUp("testuser", "tete@test.com")
+
+    //  await auth.createUserWithEmailAndPassword(emailRef.current.value, emailPassword.current.value);
+    //  db.collection("users").doc(auth().currentUser.uid).set({
+    //     uid: auth().currentUser.uid,
+    //     userName: "testusername" 
+        /*app.auth().currentUser.displayName*/
+        //  app.auth().currentUser.userIconUrl
+    //   })
+    //   AddUser(userName, emailRef.current.value,)
+        history.push("/")
+
         // setUserName(userNameRef.current.value)
         // if (userName && emailRef.current.value) {
         //     db.collection("users").add({
@@ -44,6 +47,7 @@ const SignUp = () => {
 
     return (
         <div>
+            <ToHome />
             <h1>ユーザー登録</h1>
             {error && <p style={{color: 'red'}}>{error}</p>}
             <form onSubmit={handleSubmit}>

@@ -4,6 +4,7 @@ import { useHistory, Redirect } from 'react-router-dom';
 import { useAuthContext } from '../context/AuthContext';
 
 import { AddPaint } from '../models/models'
+import ToHome from '../components/ToHome';
 
 
 const Home = () => {
@@ -17,13 +18,12 @@ const Home = () => {
         history.push('/login');
     };
     
-    AddPaint("hello" ,user.displayName)
-
     if(!user) {
         return <Redirect to="/login" />
     } else {
         return (
             <>
+                <ToHome />
                 <h1>マイページ</h1>
                 <div>{userName}さん</div>
                 <div>ログイン中：{ user.email }</div>
