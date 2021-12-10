@@ -53,9 +53,19 @@ export const getPaint = async(uid) => {
 }
 
 export const getAllPaints = async() => {
-    const docRef = db.collection("paints");
-    const getedData = organizeGetedData(docRef);
-    console.log(getedData);
+    const getedData = []
+    await db.collection("paints").onSnapshot(
+        (snapshot) => snapshot.forEach(
+            (doc)=> {
+            if (doc) {
+                
+                getedData.push({paintId:doc.id,paintTitle:doc.get('paintTitle'), paintUrl:doc.get('paintUrl')})
+                // console.log(getedData[0]);
+            } else {
+                console.log("No such document!")
+            }}));
+    // const getedData = organizeGetedData(docRef);
+    console.log(getedData.length);
     return getedData
     
 }
