@@ -36,8 +36,8 @@ const PixiTest = (props) => {
   }
 
   const mouseMove = (e) => {
-    setPosX(e.nativeEvent.offsetX)
-    setPosY(e.nativeEvent.offsetY)
+    setMoveX(e.nativeEvent.offsetX)
+    setMoveY(e.nativeEvent.offsetY)
     
   }
 
@@ -50,7 +50,7 @@ const PixiTest = (props) => {
     setIsWrite(true);
     console.log(e.touches[0].clientX - stageRef.current._canvas.offsetLeft)
     setPosX(e.touches[0].clientX - stageRef.current._canvas.offsetLeft)
-    setPosY(e.touches[0].clientY)
+    setPosY(e.touches[0].pageY - stageRef.current._canvas.offsetTop) 
     console.log(e.touches[0].clientY)
     console.log(posX)
     console.log(posY)
@@ -58,19 +58,22 @@ const PixiTest = (props) => {
 
   }
   const touchEnd = (e) => {
-    console.log("touchEnd");
-    console.log("touchEnd："+e)
-    setIsWrite(false);
+    setPosX();
+    setPosY();
+    setMoveX();
+    setMoveY();
+    
+    // setIsWrite(false);
   }
   const touchMove = (e) =>{
     console.log("touchMove");
     console.log(e.touches)
-    setPosX(e.touches[0].clientX - stageRef.current._canvas.offsetLeft)
-    setPosY(e.touches[0].clientY)
+    setMoveX(e.touches[0].clientX - stageRef.current._canvas.offsetLeft)
+    setMoveY(e.touches[0].pageY - stageRef.current._canvas.offsetTop)
   }
 
   const draw = useCallback((g) => {
-    if(!isWrite) return;
+    if(!isWrite)  return;
     console.log("draw");
     g.beginFill(props.color);
     // g.lineStyle({width:4, color:0x000,alpha:1, alignment:0.5, native:false, cap:"PIXI.LINE_CAP.ROUND"});
