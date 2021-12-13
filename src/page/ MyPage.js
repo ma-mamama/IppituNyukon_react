@@ -13,7 +13,7 @@ const  MyPage = () => {
     const [paints, setPaints] =useState([]);
     const history = useHistory();
     const {user, userName} = useAuthContext();
-    // console.log(user)
+    console.log(paints)
 
     const handleLogout = () => {
         auth.signOut();
@@ -23,13 +23,17 @@ const  MyPage = () => {
     useEffect(() => {
         const f = async() =>{
             setPaints( await getPaint(user.uid))
+            console.log(await getPaint(user.uid))
         };f();
-    },[]);
+    },[user.uid]);
 
     const deleteOpus = async(paintId) => {
         const result = window.confirm('本当に削除しますか？')
         if(result) {
             await deletePaint(paintId);
+            const pList = paints.filter(p => p.paintId !== paintId)
+            console.log(pList);
+            setPaints(pList)
             window.alert('削除しました');
         }else {
             console.log('削除キャンセル')
@@ -65,10 +69,10 @@ const  MyPage = () => {
                 <hr />                
                 <div>作品リスト</div>
                 <div style={flexStyle}>
-                {paints.map((p,i) => (
+                {paints && paints.map((p,i) => (
                     <div style={opusStyle} key={p.id + p.paintTitle}>
                     <p style={titleStyle}>{p.paintTitle}</p>
-                    <img src={p["paintUrl"]} style={paintStyle} alt="paint"/>
+                    <img src={p.paintUrl} style={paintStyle} alt="paint"/>
                     <p><input type="button" onClick={()=>deleteOpus(p.paintId)} value='削除'/></p>
                     </div>
                 ))}

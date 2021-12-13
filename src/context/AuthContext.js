@@ -1,7 +1,8 @@
 import { createContext, useState, useContext, useEffect } from "react";
 import { auth } from '../firebase';
 
-import { getUserName } from '../models/models';
+import { getUserName, changedPaint } from '../models/models';
+
 
 const AuthContext = createContext();
 
@@ -14,6 +15,7 @@ export const AuthProvider =( { children }) => {
     const [user, setUser] = useState('');
     const [loading, setLoading] = useState(true);
     const [userName, setUserName] = useState('');
+    const [logs, setLogs] = useState([]);
 
     const currentUser =  auth.currentUser;
     const value = {
@@ -21,18 +23,11 @@ export const AuthProvider =( { children }) => {
         loading,
         userName,
         setUserName,
-        currentUser
+        currentUser,
+        logs,
+        setLogs
     };
     
-    // useEffect(() => {
-    //     GetUserName(user.uid).then(u => {
-    //         setUserName(u);
-    //     })
-    // }, [])
-
-    console.log("auth1:"+userName);
-
-
     useEffect(() => {
         //マウント時に実行
         //onAuthStateChangedはサインイン、サインアウトが行われると実行、
@@ -55,6 +50,15 @@ export const AuthProvider =( { children }) => {
             unsubscribed();
         };
     }, []);//更新はしない
+
+    // useEffect(() => {
+    //     changedPaint()
+    // }, [])
+    
+
+
+
+
     return <AuthContext.Provider value={value}>
             {!loading && children}
             </AuthContext.Provider>

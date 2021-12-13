@@ -10,9 +10,8 @@ const  ListPaint = () => {
 
     useEffect(() => {
         const f = async() =>{
-            console.log(setPaints( await getAllPaints()))
-            console.log(await getAllPaints())
-            console.log("paints"+paints.length)
+            setPaints( await getAllPaints() )
+
         };f();
     },[]);
 
@@ -23,7 +22,8 @@ const  ListPaint = () => {
 
     const flexStyle = {
         display: "flex",
-    
+        flexWrap: "wrap",
+        justifyContent: "center",    
     }
 
     const opusStyle = {
@@ -40,9 +40,9 @@ const  ListPaint = () => {
             <div>作品リスト</div>
                 <div style={flexStyle}>
                 {paints.map((p,i) => (
-                    <div style={opusStyle} key={p.id + p.data.paintTitle}>
-                    <p style={titleStyle}>{p.data.paintTitle}</p>
-                    <img src={p.data.paintUrl} style={paintStyle} alt="paint"/>
+                    <div style={opusStyle} key={p.id + p.paintTitle}>
+                    <p style={titleStyle}>{p.paintTitle}</p>
+                    <img src={p.paintUrl} style={paintStyle} alt="paint"/>
                     <p >{}</p>
                     </div>
                 ))}

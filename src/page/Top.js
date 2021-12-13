@@ -11,10 +11,9 @@ import mypage from './../static/media/user.png';
 
 
 const ippituStyle = {
-    height: "200px",
-    width: "auto",
-    left: "auto",
-    right: "auto",
+    width: "100%",
+    height: "auto",
+    margin:"0",
     verticalalign: "middle"
 }
 
@@ -39,13 +38,15 @@ const buttonStyle = {
     //縦中央揃え
     display: "flex",
     flexDirection: "column",
-    justifyContent: "center"
+    justifyContent: "space-around"
 }
 
 const flexStyle = {
     display: "flex",
     justifyContent: "center",
-    margin: "30px"
+    margin: "10px",
+    flexWrap: "wrap",
+    
 }
 
 const Top = () => {
