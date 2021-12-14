@@ -14,7 +14,7 @@ const PixiTest = (props) => {
   const [error, setError] = useState("");
   
   const [isWrite, setIsWrite] = useState(false);
-  // const [titleName, setTitleName] = useState("");
+  const [titleName, setTitleName] = useState("");
   // const [url, setUrl] = useState("")
   const [ishidden, setIshidden] = useState(false);
 
@@ -25,6 +25,10 @@ const PixiTest = (props) => {
   const grapficsRef = useRef(null);
   const titleRef = useRef(null);
   let history = useHistory();
+
+  const setTitle = (e) => {
+    setTitleName(e.target.value)
+  }
 
   const mouseDown = (e) => {
     setIsWrite(true);
@@ -89,11 +93,13 @@ const PixiTest = (props) => {
   }, [moveX, moveY, props.color, isWrite, posX, posY]);
 
   const register = () => {
-    if(titleRef.current.value === ""){
+    if(titleName === ""){
       setError("タイトルを入力してください")
       return 
     }
-    addPaint(user.uid,titleRef.current.value, stageRef.current._canvas.toDataURL()).then(
+    console.log(stageRef.current._canvas.toDataURL());
+    console.log(titleName);
+    addPaint(titleName, stageRef.current._canvas.toDataURL()).then(
       // setLogs({userLog:user, titleLog:titleRef.current.value, actionLog: '作成'}),
       alert("アップロード完了"),
       history.push('/Mypage')
@@ -102,13 +108,13 @@ const PixiTest = (props) => {
 
   return (
     <>
-        <p>
+        <div>
           <form >
             <p>Title</p>
-            <input name="title" type="text" ref={titleRef} placeholder="title" />
+            <input name="title" type="text" value={titleName} onChange={setTitle} placeholder="title" />
             <input name="start" type="button"  value="絵を描く"/>
           </form>
-        </p>
+        </div>
         <p>{error}</p>
         <div>
           <p>{}</p>
