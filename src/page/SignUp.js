@@ -23,26 +23,9 @@ const SignUp = () => {
         console.log(userNameRef.current.value);
         
         signup(userNameRef.current.value, emailRef.current.value, emailPassword.current.value)
-        // SignUp("testuser", "tete@test.com")
 
-    //  await auth.createUserWithEmailAndPassword(emailRef.current.value, emailPassword.current.value);
-    //  db.collection("users").doc(auth().currentUser.uid).set({
-    //     uid: auth().currentUser.uid,
-    //     userName: "testusername" 
-        /*app.auth().currentUser.displayName*/
-        //  app.auth().currentUser.userIconUrl
-    //   })
-    //   AddUser(userName, emailRef.current.value,)
         history.push("/")
 
-        // setUserName(userNameRef.current.value)
-        // if (userName && emailRef.current.value) {
-        //     db.collection("users").add({
-        //         mail: emailRef.current.value,
-        //         user: userName
-        //     })
-        // }
-        //console.log(emailRef.current.value, emailPassword.current.value);
 };
 
     return (

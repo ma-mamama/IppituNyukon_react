@@ -14,8 +14,9 @@ const PixiTest = (props) => {
   const [error, setError] = useState("");
   
   const [isWrite, setIsWrite] = useState(false);
-  const [titleName, setTitleName] = useState("");
-  const [url, setUrl] = useState("")
+  // const [titleName, setTitleName] = useState("");
+  // const [url, setUrl] = useState("")
+  const [ishidden, setIshidden] = useState(false);
 
   const { user, setLogs} = useAuthContext();
 
@@ -88,49 +89,50 @@ const PixiTest = (props) => {
   }, [moveX, moveY, props.color, isWrite, posX, posY]);
 
   const register = () => {
-    // console.log(stageRef.current._canvas.toDataURL())  
-    // console.log(grapficsRef)
     if(titleRef.current.value === ""){
       setError("タイトルを入力してください")
       return 
     }
-    setTitleName(titleRef.current.value)
-    setUrl(stageRef.current._canvas.toDataURL())
     addPaint(user.uid,titleRef.current.value, stageRef.current._canvas.toDataURL()).then(
       // setLogs({userLog:user, titleLog:titleRef.current.value, actionLog: '作成'}),
       alert("アップロード完了"),
       history.push('/Mypage')
-
     )
   }
 
   return (
     <>
         <p>
-          title:
-          <input name="title" type="text" ref={titleRef} placeholder="title" required/>
+          <form >
+            <p>Title</p>
+            <input name="title" type="text" ref={titleRef} placeholder="title" />
+            <input name="start" type="button"  value="絵を描く"/>
+          </form>
         </p>
         <p>{error}</p>
-        <Stage 
-          ref={stageRef}
-          width={300} 
-          height={300} 
-          options={{
-             backgroundColor: 0xfffffffff ,
-             preserveDrawingBuffer: true,
-             antialias: true
-            }} 
-          onMouseDown={mouseDown}
-          onMouseUp={mouseUp}
-          onMouseMove={mouseMove} 
-          onTouchStart={touchStart}
-          onTouchMove={touchMove}
-          onTouchEnd={touchEnd}
-          renderOnComponentChange={true} //画像URLに変換するための設定
-          >
-          <Graphics draw={draw} ref={grapficsRef} /> 
-        </Stage>
-        <p><input type="button" value="登録" onClick={register}/></p>
+        <div>
+          <p>{}</p>
+          <Stage 
+            ref={stageRef}
+            width={300} 
+            height={300} 
+            options={{
+              backgroundColor: 0xfffffffff ,
+              preserveDrawingBuffer: true,
+              antialias: true
+              }} 
+            onMouseDown={mouseDown}
+            onMouseUp={mouseUp}
+            onMouseMove={mouseMove} 
+            onTouchStart={touchStart}
+            onTouchMove={touchMove}
+            onTouchEnd={touchEnd}
+            renderOnComponentChange={true} //画像URLに変換するための設定
+            >
+            <Graphics draw={draw} ref={grapficsRef} /> 
+          </Stage>
+          <p><input type="button" value="登録" onClick={register}/></p>
+        </div>
     </>
   );
 }
