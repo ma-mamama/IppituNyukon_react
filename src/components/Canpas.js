@@ -1,10 +1,11 @@
 import React, { useCallback, useEffect, useState, useRef} from 'react';
 import { useHistory } from 'react-router';
 import {Stage ,Graphics } from '@inlet/react-pixi';
-import * as PIXI from 'pixi.js'
 import { addPaint } from '../models/models';
 import { useAuthContext } from '../context/AuthContext';
 import Announce from './Announce';
+import { Paper, Button } from '@mui/material';
+// import SendIcon from '@mui/icons-material/Send';
 
 const PixiTest = (props) => {
   const [posX, setPosX] = useState();
@@ -15,19 +16,29 @@ const PixiTest = (props) => {
   
   const [isWrite, setIsWrite] = useState(false);
   const [titleName, setTitleName] = useState("");
-  // const [url, setUrl] = useState("")
   const [ishidden, setIshidden] = useState(false);
+  const [isColor, setIsColor] = useState('0x000000');
 
-  const { user, setLogs} = useAuthContext();
+  const colorElement = [];
+  const colorList = {'black':'0x000000', 'gray':'0x808080','silver':'0xc0c0c0','white':'0xffffff','maroon':'0x800000','red':'0xff0000','orange':'0xffa500','gold':'0xffd700','yellow':'0xffff00','lime':'0x00ff00','cyan':'0x00ffff','blue':'0x0000ff','magenta':'0xff00ff','violet':'0xee82ee','pink':'0xffc0cb'}
 
-  
+  const { user, setLogs, userName} = useAuthContext();
+
   const stageRef = useRef(null);
   const grapficsRef = useRef(null);
-  const titleRef = useRef(null);
   let history = useHistory();
+
 
   const setTitle = (e) => {
     setTitleName(e.target.value)
+  }
+
+  const startPaint = () => {
+    if(titleName === ""){
+      setError("タイトルを入力してください")
+      return 
+    }
+    setIshidden(!ishidden);
   }
 
   const mouseDown = (e) => {
@@ -43,14 +54,10 @@ const PixiTest = (props) => {
   const mouseMove = (e) => {
     setMoveX(e.nativeEvent.offsetX)
     setMoveY(e.nativeEvent.offsetY)
-    
   }
 
   const touchStart = (e) => {
     console.log("touchStart");
-    console.log(e.touches[0].clientX)
-    console.log(grapficsRef)
-    console.log(stageRef.current)
 
     setIsWrite(true);
     console.log(e.touches[0].clientX - stageRef.current._canvas.offsetLeft)
@@ -60,19 +67,15 @@ const PixiTest = (props) => {
     console.log(posX)
     console.log(posY)
     // etBoundingClientRect()
-
   }
   const touchEnd = (e) => {
     setPosX();
     setPosY();
     setMoveX();
     setMoveY();
-    
-    // setIsWrite(false);
   }
   const touchMove = (e) =>{
     console.log("touchMove");
-    console.log(e.touches)
     setMoveX(e.touches[0].clientX - stageRef.current._canvas.offsetLeft)
     setMoveY(e.touches[0].pageY - stageRef.current._canvas.offsetTop)
   }
@@ -80,9 +83,8 @@ const PixiTest = (props) => {
   const draw = useCallback((g) => {
     if(!isWrite)  return;
     console.log("draw");
-    g.beginFill(props.color);
     // g.lineStyle({width:4, color:0x000,alpha:1, alignment:0.5, native:false, cap:"PIXI.LINE_CAP.ROUND"});
-    g.lineStyle(4, 0x000,1, 0.5, false, "ROUND");
+    g.lineStyle(4, isColor,1, 0.5, false, "ROUND");
 
     // g.lineStyle({"options.cap":"round"});
     g.moveTo(posX, posY);
@@ -90,55 +92,83 @@ const PixiTest = (props) => {
     g.lineTo(moveX, moveY);
     setPosX(moveX);
     setPosY(moveY);
-  }, [moveX, moveY, props.color, isWrite, posX, posY]);
+  }, [moveX, moveY, isWrite, posX, posY, isColor]);
 
   const register = () => {
-    if(titleName === ""){
-      setError("タイトルを入力してください")
-      return 
-    }
-    console.log(stageRef.current._canvas.toDataURL());
-    console.log(titleName);
-    addPaint(titleName, stageRef.current._canvas.toDataURL()).then(
+    addPaint(user.uid, userName, titleName, stageRef.current._canvas.toDataURL()).then(
       // setLogs({userLog:user, titleLog:titleRef.current.value, actionLog: '作成'}),
       alert("アップロード完了"),
       history.push('/Mypage')
     )
   }
 
+  const colorStyle = (color) => {
+    return({
+    backgroundColor: color,
+    height: "30px",
+    width: "30px",
+    borderRadius: "50%",
+    margin: "10px",
+      }
+    )
+  }
+
+  const flexStyle = {
+    display: "flex",
+    justifyContent: "center",
+    flexWrap: "wrap",
+  }
+
+  const paperTitleStyle = {
+    margin: '20px'
+  }
+
+  const paperStyle = {
+    padding: '20px'
+  }
+  Object.keys(colorList).forEach((c) => {
+    colorElement.push(
+    <p style={colorStyle(c)} onClick={()=>setIsColor(colorList[c])}></p> 
+    )
+    }
+  )
   return (
     <>
-        <div>
-          <form >
-            <p>Title</p>
-            <input name="title" type="text" value={titleName} onChange={setTitle} placeholder="title" />
-            <input name="start" type="button"  value="絵を描く"/>
-          </form>
-        </div>
-        <p>{error}</p>
-        <div>
-          <p>{}</p>
-          <Stage 
-            ref={stageRef}
-            width={300} 
-            height={300} 
-            options={{
-              backgroundColor: 0xfffffffff ,
-              preserveDrawingBuffer: true,
-              antialias: true
-              }} 
-            onMouseDown={mouseDown}
-            onMouseUp={mouseUp}
-            onMouseMove={mouseMove} 
-            onTouchStart={touchStart}
-            onTouchMove={touchMove}
-            onTouchEnd={touchEnd}
-            renderOnComponentChange={true} //画像URLに変換するための設定
-            >
-            <Graphics draw={draw} ref={grapficsRef} /> 
-          </Stage>
-          <p><input type="button" value="登録" onClick={register}/></p>
-        </div>
+        {ishidden ? 
+          <div>
+            <p>{titleName}</p>
+              <Stage 
+                ref={stageRef}
+                width={300} 
+                height={300} 
+                options={{
+                  backgroundColor: 0xfffffffff ,
+                  preserveDrawingBuffer: true,
+                  antialias: true
+                  }} 
+                onMouseDown={mouseDown}
+                onMouseUp={mouseUp}
+                onMouseMove={mouseMove} 
+                onTouchStart={touchStart}
+                onTouchMove={touchMove}
+                onTouchEnd={touchEnd}
+                renderOnComponentChange={true} //画像URLに変換するための設定
+              >
+                <Graphics draw={draw} ref={grapficsRef} /> 
+              </Stage>
+              <div style={flexStyle}>
+                {colorElement}
+              </div>
+            <p><Button variant="contained" onClick={register}>登録</Button></p>
+          </div>
+          :
+          <Paper elevation={3} style={paperStyle}>
+            <p style={paperTitleStyle}>Titleを決めてください</p>
+            <div><input name="title" type="text" value={titleName} onChange={setTitle} placeholder="title" /></div>
+            <div style={paperTitleStyle}><Button variant="contained" name="start" onClick={startPaint} >絵を描く</Button></div>
+            <p>{error}</p>
+          </Paper>
+        }
     </>
   );
 }

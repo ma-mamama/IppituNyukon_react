@@ -1,6 +1,7 @@
 import { useContext, useRef, useState} from 'react';
 import { auth, db } from '../firebase';
 import { useHistory, Redirect } from 'react-router-dom';
+import {TextField, Button, IconButton} from '@mui/material';
 
 
 import { AddUser } from '../models/models';
@@ -34,35 +35,43 @@ const SignUp = () => {
             <h1>ユーザー登録</h1>
             {error && <p style={{color: 'red'}}>{error}</p>}
             <form onSubmit={handleSubmit}>
-                <div>
-                    <label>ニックネーム</label>
-                    <input
-                        name="userName" 
+                <div className='middle-margin'>
+                    <TextField
+                        required
+                        id="filled-required"
+                        label="ニックネーム"
                         type="text"
-                        placeholder="name"
-                        ref={userNameRef} 
+                        name="name"
+                        placeholder="ニックネーム"
+                        variant="filled"
+                        inputRef={userNameRef}
                     />
                 </div>
-                <div>
-                    <label>メールアドレス</label>
-                    <input 
-                        name="email" 
-                        type="email" 
-                        placeholder="email" 
-                        ref={emailRef}
+                <div className='middle-margin'>
+                    <TextField
+                        required
+                        id="filled-required"
+                        label="メールアドレス"
+                        type="email"
+                        name="email"
+                        placeholder="email"
+                        variant="filled"
+                        inputRef={emailRef}
                     />
                 </div>
+                <div className='middle-margin'>
+                            <TextField
+                                id="outlined-required"
+                                label="パスワード"
+                                type="password"
+                                name="password"
+                                placeholder="password"
+                                variant="filled"
+                                inputRef={emailPassword}
+                            />
+                        </div>
                 <div>
-                    <label>パスワード</label>
-                    <input
-                        name="password" 
-                        type="password"
-                        placeholder="password"
-                        ref={emailPassword} 
-                     />
-                </div>
-                <div>
-                    <button>登録</button>
+                    <Button variant="contained" href="#contained-buttons" type='submit' onClick={handleSubmit} >登録</Button>
                 </div>
             </form>
         </div>

@@ -6,7 +6,7 @@ import { getUserName, changedPaint } from '../models/models';
 
 const AuthContext = createContext();
 
-export const useAuthContext =　() => {
+export const useAuthContext = () => {
     //Contextは共有できる
     return useContext(AuthContext);
 }

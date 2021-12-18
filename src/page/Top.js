@@ -46,7 +46,6 @@ const flexStyle = {
     justifyContent: "center",
     margin: "10px",
     flexWrap: "wrap",
-    
 }
 
 const Top = () => {

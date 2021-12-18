@@ -41,3 +41,27 @@ body {
   background-color: navajowhite;
   text-align: center;
 }
+
+.short-margin {
+  margin: 5px;
+}
+
+.middle-margin {
+  margin: 15px;
+}
+
+.flexbox {
+  display: flex;
+  justify-content: center;
+  margin: 10px;
+  align-items:stretch;
+  /* flex-wrap: wrap; */
+}
+
+.white {
+  background-color: #ffffff;
+}
+
+.userName {
+  font-size: 10px;
+}

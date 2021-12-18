@@ -1,5 +1,9 @@
 import React from 'react'
 import {useEffect, useState} from 'react' 
+import {ListSubheader,ImageList, ImageListItemBar, IconButton ,ImageListItem} from '@mui/material';
+import InfoIcon from '@mui/icons-material/Info';
+
+
 import ToHome from '../components/ToHome';
 
 
@@ -11,7 +15,6 @@ const  ListPaint = () => {
     useEffect(() => {
         const f = async() =>{
             setPaints( await getAllPaints() )
-
         };f();
     },[]);
 
@@ -38,15 +41,15 @@ const  ListPaint = () => {
         <div>
             <ToHome />
             <div>作品リスト</div>
-                <div style={flexStyle}>
+            <div style={flexStyle}>
                 {paints.map((p,i) => (
                     <div style={opusStyle} key={p.id + p.paintTitle}>
                     <p style={titleStyle}>{p.paintTitle}</p>
                     <img src={p.paintUrl} style={paintStyle} alt="paint"/>
-                    <p >{}</p>
+                    <p className='userName'>{p.userName}</p>
                     </div>
                 ))}
-                </div>
+            </div>
         </div>
     )
 }

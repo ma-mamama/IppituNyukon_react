@@ -1,6 +1,9 @@
 import {useEffect, useState} from 'react' 
 import { auth } from '../firebase';
 import { useHistory, Redirect } from 'react-router-dom';
+import {TextField, Button, IconButton} from '@mui/material';
+
+
 import { useAuthContext } from '../context/AuthContext';
 
 import { GetUserName } from '../models/models';
@@ -73,7 +76,9 @@ const  MyPage = () => {
                     <div style={opusStyle} key={p.id + p.paintTitle}>
                     <p style={titleStyle}>{p.paintTitle}</p>
                     <img src={p.paintUrl} style={paintStyle} alt="paint"/>
-                    <p><input type="button" onClick={()=>deleteOpus(p.paintId)} value='削除'/></p>
+                    <p>
+                    <Button variant="contained" href="#contained-buttons"  onClick={()=>deleteOpus(p.paintId)}  color="error">削除</Button>
+                    </p>
                     </div>
                 ))}
                 </div>

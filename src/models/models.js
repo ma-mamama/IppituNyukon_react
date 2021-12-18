@@ -1,4 +1,4 @@
-import { db　} from '../firebase'
+import { db } from '../firebase'
 import {  doc, onSnapshot } from'firebase/firestore'
 
 
@@ -26,13 +26,14 @@ export const getUserName = async(uid) => {
     });
 }
 
-export const addPaint = async(uid, paintTitle, paintUrl) => {
+export const addPaint = async(uid, userName, paintTitle, paintUrl) => {
     console.log("addPaint");
     const docRef = db.collection("paints")
     await docRef.add({
         paintTitle: paintTitle,
         paintUrl: paintUrl,
-        uid: uid
+        uid: uid,
+        userName: userName,
     });
 }
 
@@ -41,7 +42,7 @@ const organizeGetedData = async(docRef) => {
     const snapShot = await docRef.get()
     snapShot.forEach((doc) => {
         if (doc) {
-            getedData.push({paintId:doc.id,paintTitle:doc.get('paintTitle'), paintUrl:doc.get('paintUrl')})
+            getedData.push({paintId:doc.id, userName:doc.get('userName'), paintTitle:doc.get('paintTitle'), paintUrl:doc.get('paintUrl')})
         } else {
             console.log("No such document!")
         }

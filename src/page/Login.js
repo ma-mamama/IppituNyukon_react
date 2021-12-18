@@ -1,6 +1,8 @@
 import {auth, provider} from '../firebase';
 import {Link, useHistory} from 'react-router-dom';
-import { useState } from 'react';
+import { useState, useRef } from 'react';
+import {TextField, Button, IconButton} from '@mui/material';
+import GoogleIcon from '@mui/icons-material/Google';
 
 import Status from '../components/Status';
 import ToHome from '../components/ToHome';
@@ -13,11 +15,13 @@ const usercreateStyle = {
 const Login = () => {
     const history = useHistory();
     const [error, setError] = useState('');
+    const emailRef = useRef(null);
+    const passwordRef = useRef(null);
+
     const handleSubmit = async (event) => {
         event.preventDefault();
-        const { email, password } = event.target.elements;
         try {
-            await auth.signInWithEmailAndPassword(email.value, password.value);
+            await auth.signInWithEmailAndPassword(emailRef.current.value, passwordRef.current.value);
             history.push('/');
         } catch(error) {
             console.log(error);
@@ -37,23 +41,50 @@ const Login = () => {
         <div>
             <ToHome />
             <h1>ログイン</h1>
-            {error && <p style={{color: 'red'}}>{error}</p>}
-            <form onSubmit={handleSubmit}>
+            <div className='flexbox'>
                 <div>
-                    <label>メールアドレス</label>
-                    <input name="email" type="email" placeholder="email" />
+                    <div>メールアドレスでログイン</div>
+                    {error && <p style={{color: 'red'}}>{error}</p>}
+                    <form onSubmit={handleSubmit}>
+                        <div className='middle-margin'>
+                            <TextField
+                                required
+                                id="filled-required"
+                                label="メールアドレス"
+                                type="email"
+                                name="email"
+                                placeholder="email"
+                                variant="filled"
+                                inputRef={emailRef}
+                            />
+                        </div>
+                        <div className='middle-margin'>
+                            <TextField
+                                id="outlined-required"
+                                label="パスワード"
+                                type="password"
+                                name="password"
+                                placeholder="password"
+                                variant="filled"
+                                inputRef={passwordRef}
+                            />
+                        </div>
+                        <div>
+                            <Button variant="contained" href="#contained-buttons" type='submit' onClick={handleSubmit} >ログイン</Button>
+                        </div>
+                        
+                    </form>
+                    <div className='middle-margin' style={usercreateStyle}><Link to="/SignUp">新規登録はこちら</Link></div>
                 </div>
+                
                 <div>
-                    <label>パスワード</label>
-                    <input name="password" type="password" placeholder="password" />
+                    <p>googleアカウントでログイン</p>
+                    <IconButton  aria-label="delete" size="large" onClick={googleSubmit} >
+                        <GoogleIcon  fontSize="inherit" />
+                    </IconButton>
+                    
                 </div>
-                <div>
-                    <button>ログイン</button>
-                </div>
-
-                <button onClick={googleSubmit}>Googleログイン</button>
-                <div style={usercreateStyle}><Link to="/SignUp">新規登録はこちら</Link></div>
-            </form>
+            </div>
         </div>
     );
 
