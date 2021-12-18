@@ -1,5 +1,4 @@
 import './App.css';
-import Home from './page/Home';
 import SignUp from './page/SignUp';
 import Login from './page/Login'
 import ListPaint from './page/ ListPaint';
@@ -26,7 +25,6 @@ function App() {
           <Route path="/listpaint" component={ListPaint}/>
           <Route path="/mypage" component={MyPage}/> 
           <Route path="/paint" component={Paint} />
-          <Route exact path="/home" component={Home} />
         </BrowserRouter>
       </div>
     </AuthProvider>
