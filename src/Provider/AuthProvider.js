@@ -1,10 +1,13 @@
 import {React} from 'react'
-import { useHistory } from 'react-router-dom'
 import { auth, provider } from '../firebase'
 import { addUser } from '../models/models'
 
-export const Login = (email, password) => {
-    
+export const emailLogin = async(email, password) => {
+    try {
+        await auth.signInWithEmailAndPassword(email, password)
+    } catch(error) {
+        return error
+    }
 }
 
 export const googleLogin = async() => {

@@ -1,6 +1,5 @@
 import { useContext, useRef, useState} from 'react';
-import { auth, db } from '../firebase';
-import { useHistory, Redirect } from 'react-router-dom';
+import { useHistory,} from 'react-router-dom';
 import {TextField, Button, IconButton} from '@mui/material';
 
 
@@ -22,12 +21,12 @@ const SignUp = () => {
     const handleSubmit = async(event) => {
         event.preventDefault();
         console.log(userNameRef.current.value);
-        
-        signup(userNameRef.current.value, emailRef.current.value, emailPassword.current.value)
-
-        history.push("/")
-
-};
+        signup(userNameRef.current.value, emailRef.current.value, emailPassword.current.value).then(
+            (e)=>{
+                e.message ? setError(e.message) : history.push("/") 
+            }
+        )        
+    };
 
     return (
         <div>
@@ -54,22 +53,22 @@ const SignUp = () => {
                         label="メールアドレス"
                         type="email"
                         name="email"
-                        placeholder="email"
+                        placeholder="email@test.jp"
                         variant="filled"
                         inputRef={emailRef}
                     />
                 </div>
                 <div className='middle-margin'>
-                            <TextField
-                                id="outlined-required"
-                                label="パスワード"
-                                type="password"
-                                name="password"
-                                placeholder="password"
-                                variant="filled"
-                                inputRef={emailPassword}
-                            />
-                        </div>
+                    <TextField
+                        id="outlined-required"
+                        label="パスワード"
+                        type="password"
+                        name="password"
+                        placeholder="password"
+                        variant="filled"
+                        inputRef={emailPassword}
+                    />
+                </div>
                 <div>
                     <Button variant="contained" href="#contained-buttons" type='submit' onClick={handleSubmit} >登録</Button>
                 </div>
