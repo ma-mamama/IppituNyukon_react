@@ -126,9 +126,9 @@ const PixiTest = (props) => {
   const paperStyle = {
     padding: '20px'
   }
-  Object.keys(colorList).forEach((c) => {
+  Object.keys(colorList).forEach((c, i) => {
     colorElement.push(
-    <p style={colorStyle(c)} onClick={()=>setIsColor(colorList[c])}></p> 
+    <p key={i} style={colorStyle(c)} onClick={()=>setIsColor(colorList[c])}></p> 
     )
     }
   )
