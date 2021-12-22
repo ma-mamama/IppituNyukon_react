@@ -8,7 +8,7 @@ const PublicRoute = ({ component: Component, ...rest }) => {
             {...rest}
             render={(routeProps) => {
                 return !user ? <Component {...routeProps} /> :
-                <Redirect to="/home" />
+                <Redirect to="/" />
             }}
         />
     )
