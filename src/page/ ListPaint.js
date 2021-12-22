@@ -9,7 +9,7 @@ import ToHome from '../components/ToHome';
 
 import { getAllPaints } from '../models/models'
 
-const  ListPaint = () => {
+const ListPaint = () => {
     const [paints, setPaints] =useState([]);
 
     useEffect(() => {
@@ -29,12 +29,7 @@ const  ListPaint = () => {
             <ToHome />
             <div>作品リスト</div>
             <div style={flexStyle}>
-                {paints.map((p,i) => (
-                    // <div style={opusStyle} key={p.id + p.paintTitle}>
-                    // <p style={titleStyle}>{p.paintTitle}</p>
-                    // <img src={p.paintUrl} style={paintStyle} alt="paint"/>
-                    // <p className='userName'>{p.userName}</p>
-                    // </div>
+                {paints.map((p) => (
                     <Card className='middle-margin' key={p.paintUrl}>
                         <CardHeader
                             title={p.paintTitle}
