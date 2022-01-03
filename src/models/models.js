@@ -1,12 +1,12 @@
-import { db } from '../firebase'
-import {  doc, onSnapshot } from'firebase/firestore'
+import { db, serverTimestamp } from '../firebase'
+import {  doc, Firestore, onSnapshot } from'firebase/firestore'
 
 
 export const addUser = async(userName, email, uid) => {
     console.log("addUser");
     await db.collection("users").doc(uid).set({
         name: userName,
-        mail: email
+        mail: email,
     }).catch((error) => {
         console.error("Error adding document: ", error)
     })
@@ -34,15 +34,23 @@ export const addPaint = async(uid, userName, paintTitle, paintUrl) => {
         paintUrl: paintUrl,
         uid: uid,
         userName: userName,
+        createdAt: serverTimestamp,
     });
 }
 
 const organizeGetedData = async(docRef) => {
     const getedData = []
-    const snapShot = await docRef.get()
+    const snapShot = await docRef.orderBy('createdAt', "desc").get()
     snapShot.forEach((doc) => {
         if (doc) {
-            getedData.push({paintId:doc.id, userName:doc.get('userName'), paintTitle:doc.get('paintTitle'), paintUrl:doc.get('paintUrl')})
+            getedData.push(
+                {
+                    paintId:doc.id, 
+                    userName:doc.get('userName'), 
+                    paintTitle:doc.get('paintTitle'), 
+                    paintUrl:doc.get('paintUrl'),
+                    uid:doc.get('uid')
+                })
         } else {
             console.log("No such document!")
         }
@@ -52,18 +60,7 @@ const organizeGetedData = async(docRef) => {
 
 export const getPaint = async(uid) => {
     console.log("getPaint");
-    const docRef = db.collection("paints").where("uid", "==", uid);
-    
-    // docRef.onSnapshot((snapshot) => {
-    //     let getedData = []
-    //     console.log(snapshot);
-    //     snapshot.docs.forEach((doc) => {
-    //         console.log(doc.data());
-    //         getedData.push({ paintId: doc.data().id, paintTitle: doc.data().paintTitle, paintUrl: doc.data().paintUrl });
-    //     });
-    //     console.log(getedData)
-    //     return getedData
-    // })
+    const docRef = db.collection("paints").where("uid", "==", uid)
     const getedData = await organizeGetedData(docRef);
     return getedData
     
@@ -105,5 +102,11 @@ export const changedPaint = () => {
     }) 
 }
 
+export const update = async(paintId) => {
+    const docRef = db.collection("paints").doc(paintId)
+    await docRef.update({
+        createdAt: serverTimestamp,
+    });
+}
 
 

@@ -8,6 +8,11 @@ import { Paper, Button } from '@mui/material';
 // import SendIcon from '@mui/icons-material/Send';
 
 const PixiTest = (props) => {
+  let history = useHistory();
+  const { user, setLogs, userName} = useAuthContext();
+  if(!user){
+    history.push('/login')
+  }
   const [posX, setPosX] = useState();
   const [posY, setPosY] = useState();
   const [moveX, setMoveX] = useState();
@@ -22,11 +27,10 @@ const PixiTest = (props) => {
   const colorElement = [];
   const colorList = {'black':'0x000000', 'gray':'0x808080','silver':'0xc0c0c0','white':'0xffffff','maroon':'0x800000','red':'0xff0000','orange':'0xffa500','gold':'0xffd700','yellow':'0xffff00','lime':'0x00ff00','cyan':'0x00ffff','blue':'0x0000ff','magenta':'0xff00ff','violet':'0xee82ee','pink':'0xffc0cb'}
 
-  const { user, setLogs, userName} = useAuthContext();
+  
 
   const stageRef = useRef(null);
   const grapficsRef = useRef(null);
-  let history = useHistory();
 
 
   const setTitle = (e) => {
@@ -96,9 +100,16 @@ const PixiTest = (props) => {
 
   const register = () => {
     addPaint(user.uid, userName, titleName, stageRef.current._canvas.toDataURL()).then(
+     (e) =>{
+       if(e){
+         setError(e.message)
+         alert("ログインしてください")
+         history.push('/Login')
+       }
+     },
       // setLogs({userLog:user, titleLog:titleRef.current.value, actionLog: '作成'}),
       alert("アップロード完了"),
-      history.push('/Mypage')
+      history.push('/listpaint')
     )
   }
 
@@ -126,9 +137,9 @@ const PixiTest = (props) => {
   const paperStyle = {
     padding: '20px'
   }
-  Object.keys(colorList).forEach((c) => {
+  Object.keys(colorList).forEach((c, i) => {
     colorElement.push(
-    <p style={colorStyle(c)} onClick={()=>setIsColor(colorList[c])}></p> 
+    <p key={i} style={colorStyle(c)} onClick={()=>setIsColor(colorList[c])}></p> 
     )
     }
   )

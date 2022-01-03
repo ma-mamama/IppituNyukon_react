@@ -38,7 +38,7 @@
 }
 
 body {
-  background-color: navajowhite;
+  background-color: burlywood;
   text-align: center;
 }
 
@@ -64,4 +64,17 @@ body {
 
 .userName {
   font-size: 10px;
+}
+
+.sameLink {
+  text-decoration:underline;
+  color: blue;
+}
+
+.sameLink:hover {
+  cursor: pointer;
+}
+
+.MuiCardHeader-title {
+  font-size: 1px;
 }

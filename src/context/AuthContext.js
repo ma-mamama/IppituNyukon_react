@@ -51,13 +51,6 @@ export const AuthProvider =( { children }) => {
         };
     }, []);//更新はしない
 
-    // useEffect(() => {
-    //     changedPaint()
-    // }, [])
-    
-
-
-
 
     return <AuthContext.Provider value={value}>
             {!loading && children}

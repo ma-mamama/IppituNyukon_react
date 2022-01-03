@@ -4,13 +4,9 @@ import { useState, useRef } from 'react';
 import {TextField, Button, IconButton} from '@mui/material';
 import GoogleIcon from '@mui/icons-material/Google';
 
-import Status from '../components/Status';
 import ToHome from '../components/ToHome';
-import { googleLogin } from '../Provider/AuthProvider';
+import { emailLogin, googleLogin, guestlLogin } from '../Provider/AuthProvider';
 
-const usercreateStyle = {
-    // display: "block",
-}
 
 const Login = () => {
     const history = useHistory();
@@ -20,20 +16,20 @@ const Login = () => {
 
     const handleSubmit = async (event) => {
         event.preventDefault();
-        try {
-            await auth.signInWithEmailAndPassword(emailRef.current.value, passwordRef.current.value);
-            history.push('/');
-        } catch(error) {
-            console.log(error);
-            setError(error.message);
-        }
+        emailLogin(emailRef.current.value, passwordRef.current.value).then(
+            (e)=>{
+                e ? setError(e.message) : history.push('/')
+            }
+        )
     };
+
+    
+
     const googleSubmit = async (event) => {
         try {
             await googleLogin();
             history.push('/')
         } catch(error) {
-            console.log(error);
             setError(error.message);
         }
     };
@@ -53,7 +49,7 @@ const Login = () => {
                                 label="メールアドレス"
                                 type="email"
                                 name="email"
-                                placeholder="email"
+                                placeholder="email@test.jp"
                                 variant="filled"
                                 inputRef={emailRef}
                             />
@@ -72,15 +68,16 @@ const Login = () => {
                         <div>
                             <Button variant="contained" href="#contained-buttons" type='submit' onClick={handleSubmit} >ログイン</Button>
                         </div>
-                        
                     </form>
-                    <div className='middle-margin' style={usercreateStyle}><Link to="/SignUp">新規登録はこちら</Link></div>
+                    <div className='middle-margin sameLink' onClick={()=>guestlLogin()}>ゲストユーザーでログイン</div>
+                    <div className='middle-margin' ><Link to="/SignUp">新規登録はこちら</Link></div>
+
                 </div>
                 
                 <div>
-                    <p>googleアカウントでログイン</p>
+                    <div>googleアカウントでログイン</div>
                     <IconButton  aria-label="delete" size="large" onClick={googleSubmit} >
-                        <GoogleIcon  fontSize="inherit" />
+                        <GoogleIcon  sx={{ fontSize: 50 }}  />
                     </IconButton>
                     
                 </div>
