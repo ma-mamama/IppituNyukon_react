@@ -10,6 +10,14 @@ export const emailLogin = async(email, password) => {
     }
 }
 
+export const guestlLogin = async() => {
+    try {
+        await auth.signInWithEmailAndPassword('guest@guest.com', 'guestpassword')
+    } catch(error) {
+        return error
+    }
+}
+
 export const googleLogin = async() => {
     try {
         await auth.signInWithPopup(provider).then((userCredential) => {

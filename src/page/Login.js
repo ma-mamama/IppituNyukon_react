@@ -5,7 +5,7 @@ import {TextField, Button, IconButton} from '@mui/material';
 import GoogleIcon from '@mui/icons-material/Google';
 
 import ToHome from '../components/ToHome';
-import { emailLogin, googleLogin } from '../Provider/AuthProvider';
+import { emailLogin, googleLogin, guestlLogin } from '../Provider/AuthProvider';
 
 
 const Login = () => {
@@ -22,6 +22,9 @@ const Login = () => {
             }
         )
     };
+
+    
+
     const googleSubmit = async (event) => {
         try {
             await googleLogin();
@@ -65,9 +68,10 @@ const Login = () => {
                         <div>
                             <Button variant="contained" href="#contained-buttons" type='submit' onClick={handleSubmit} >ログイン</Button>
                         </div>
-                        
                     </form>
+                    <div className='middle-margin sameLink' onClick={()=>guestlLogin()}>ゲストユーザーでログイン</div>
                     <div className='middle-margin' ><Link to="/SignUp">新規登録はこちら</Link></div>
+
                 </div>
                 
                 <div>

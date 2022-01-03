@@ -22,7 +22,7 @@ const SignUp = () => {
         console.log(userNameRef.current.value);
         signup(userNameRef.current.value, emailRef.current.value, emailPassword.current.value).then(
             (e)=>{
-                e.message ? setError(e.message) : history.push("/") 
+                e? setError(e.message) : history.push("/") 
             }
         )        
     };
